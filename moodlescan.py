@@ -25,7 +25,8 @@ options, remainder = parser.parse_args()
 
 def update():
 	print ("actualizando...")
-	urllib.urlretrieve ("http://localhost/img/data.zip", "data.zip")
+	urlup = "https://raw.githubusercontent.com/inc0d3/moodlescan/master/update/data.zip"
+	urllib.request.urlretrieve (urlup, "data.zip")
 	zip_ref = zipfile.ZipFile('data.zip', 'r')
 	zip_ref.extractall('data')
 	zip_ref.close()
