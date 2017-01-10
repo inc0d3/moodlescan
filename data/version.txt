@@ -1,0 +1,33 @@
+{
+"archivos": [{
+    "README.txt" : [ {
+       
+       "3d1254d6baf1b3395111efd1ed8fc5df": {
+	 "version" : "3.2.1"	
+       }
+             
+    }],
+    "tags.txt":  [{
+      
+      "68eacb97d86f0c4621fa2b0e17cabd8c": {
+         "version" : "3.2"
+       }
+
+    }],
+    "admin/environment.xml" : [{
+
+	"e05f0126ed075eaf8dda7e1346e439ff" : {
+	  "version" : "2.4.2"
+	},
+	"54145c49bf5f6a90ace4cf7613580587" : {
+	  "version" : "2.9"
+	},
+	"e8ad87d8f9d459429d258f1ae7b91ade" : {
+	  "version" : "2.9.9"
+	}
+
+    }]
+
+  }]
+}
+
