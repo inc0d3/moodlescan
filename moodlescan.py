@@ -34,30 +34,33 @@ def update():
 
 
 def checkupdate():
-	u = urllib.urlopen ("http://localhost/img/update.dat")
-	i = u.info()
-	ultima = i.getdate('last-modified')
-	ultima = datetime.datetime(*ultima[:6])
-
+	urlup = "https://raw.githubusercontent.com/inc0d3/moodlescan/master/update/update.dat"
 	
 	try:
 
 		fo = open("update.dat", "r+")
-
+		li = fo.readline()
+		actual = datetime.datetime.strptime(li,"%Y%m%d%H%M%S")
+		fo.close()
+		
+		urllib.request.urlretrieve (urlup, "update.dat")
+		fo = open("update.dat", "r+")
+		li = fo.readline()
+		ultima = datetime.datetime.strptime(li,"%Y%m%d%H%M%S")
+		fo.close()
+		
+		if ultima > actual:
+			update()
+		
 	except IOError as e:
 		if e.errno == 2:
-			urllib.urlretrieve ("http://localhost/img/update.dat", "update.dat")
+			urllib.request.urlretrieve (urlup, "update.dat")
 			fo = open("update.dat", "r+")
+			update()
 		else:
 			print (e)
 	
 
-	li = fo.readline()
-
-	actual = datetime.datetime.strptime(li,"%Y%m%d%H%M%S")
-
-	if ultima > actual:
-		update()
 
 
 def getheader(url):
