@@ -5,6 +5,7 @@ import hashlib
 import json
 import optparse
 import os
+import sys
 import urllib.request
 import zipfile
 
@@ -24,17 +25,20 @@ parser.add_option('-a', action="store_true",dest="act", help="Actualizar base de
 options, remainder = parser.parse_args()
 
 def update():
-	print ("actualizando...")
+	#TODO: catch HTTP errors (404, 503, timeout, etc)
+	print ("Nueva version de la base de datos encontrada, actualizando...")
 	urlup = "https://raw.githubusercontent.com/inc0d3/moodlescan/master/update/data.zip"
 	urllib.request.urlretrieve (urlup, "data.zip")
 	zip_ref = zipfile.ZipFile('data.zip', 'r')
 	zip_ref.extractall('data')
 	zip_ref.close()
 	os.remove('data.zip')
-	print ("\nla base de datos ha sido actualizada")
+	print ("\nLa base de datos ha sido actualizada correctamente.")
 
 
 def checkupdate():
+	#TODO: catch HTTP errors (404, 503, timeout, etc)
+
 	urlup = "https://raw.githubusercontent.com/inc0d3/moodlescan/master/update/update.dat"
 	
 	try:
@@ -52,6 +56,8 @@ def checkupdate():
 		
 		if ultima > actual:
 			update()
+		else:
+			print("La base de datos de moodlescan ya esta actualizada.")
 		
 	except IOError as e:
 		if e.errno == 2:
@@ -66,18 +72,22 @@ def checkupdate():
 
 def getheader(url):
 	print ("Obteniendo datos del servidor " + url + " ...")
-	cnn = urllib.request.urlopen(url)
 	
-	print ("")
-	print ("server		: " + cnn.info().get('server'))
-	if cnn.info().get('x-powered-by'):
-		print ("x-powered-by	: " + cnn.info().get('x-powered-by'))	
-	if cnn.info().get('x-frame-options'):
-		print ("x-frame-options	: " + cnn.info().get('x-frame-options'))
-	print ("date		: " + cnn.info().get('date'))
-	print ("")
-
-
+	try:
+		cnn = urllib.request.urlopen(url)
+		
+		print ("")
+		print ("server		: " + cnn.info().get('server'))
+		if cnn.info().get('x-powered-by'):
+			print ("x-powered-by	: " + cnn.info().get('x-powered-by'))	
+		if cnn.info().get('x-frame-options'):
+			print ("x-frame-options	: " + cnn.info().get('x-frame-options'))
+		print ("date		: " + cnn.info().get('date'))
+		print ("")
+	except Exception as e:
+		print ("\nHa ocurrido un error al intentar conectar con el objetivo. Verifique la URL.\nBusqueda finalizada.\n")
+		sys.exit()
+	
 
 def getversion(url):
 	print ("Obteniendo version de moodle...")
@@ -90,7 +100,7 @@ def getversion(url):
 			
 			ar = k
 			
-			#TODO: no cache y catch HTTP errors (404, 503, etc)
+			#TODO: no cache y catch HTTP errors (404, 503, timeout, etc)
 			cnn = urllib.request.urlopen(url + k)
 			cnt = cnn.read()
 
@@ -99,20 +109,44 @@ def getversion(url):
 			for c in b:
 				for k, x in c.items():
 					if hr == k:
-						print ("\nVersion encontrada via " + ar + " : " +  x['version'])
-						return
+						print ("\nVersion encontrada via " + ar + " : Moodle v" +  x['version'])
+						return x['version']
 				
 	print ("\nVersion de moodle no encontrada")
+	return False
+
+def getcve(version):	
+	print("\nBuscando vulnerabilidades...")
+	f = open('data/cve.txt','r')
+	jsond = json.load(f)
+	f.close()
 	
-
-
+	version = "," + version + ","
+	
+	nvuln = 0
+	nexpl = 0
+	
+	for a in jsond['vulnerabilidades']:
+		for k , b in a.items():
+			if version  in b['afectadas']:
+				nvuln +=1
+				print ("\nCVE		: " + k)
+				print ("Descripcion	: " + b['descripcion'])
+				print ("Tipo		: " + b['tipo'])
+				print ("Autenticacion?	: " + b['auth'])
+				print ("Exploit?	: " + b['exploit'])
+				
+				
 if options.act:
 	checkupdate()
 
 if options.url:
 	getheader(options.url)
-	getversion(options.url)
-
+	v = getversion(options.url)
+	if v:
+		getcve(v)
+		
+	print ("\nBusqueda finalizada.")
 
 
 

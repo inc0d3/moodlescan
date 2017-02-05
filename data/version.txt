@@ -3,7 +3,7 @@
     "README.txt" : [ {
        
        "3d1254d6baf1b3395111efd1ed8fc5df": {
-	 "version" : "3.2.1"	
+		"version" : "3.2.1"	
        }
              
     }],
@@ -16,15 +16,21 @@
     }],
     "admin/environment.xml" : [{
 
-	"e05f0126ed075eaf8dda7e1346e439ff" : {
-	  "version" : "2.4.2"
-	},
-	"54145c49bf5f6a90ace4cf7613580587" : {
-	  "version" : "2.9"
-	},
-	"e8ad87d8f9d459429d258f1ae7b91ade" : {
-	  "version" : "2.9.9"
-	}
+		"e05f0126ed075eaf8dda7e1346e439ff" : {
+		  "version" : "2.4.2"
+		},
+		"c05ea78249ea5498198b7a7b359ff247" : {
+		  "version" : "2.6"
+		},
+		"54145c49bf5f6a90ace4cf7613580587" : {
+		  "version" : "2.9"
+		},
+		"e8ad87d8f9d459429d258f1ae7b91ade" : {
+		  "version" : "2.9.9"
+		},
+		"c902469951e351b1bcaae71e8148cc3a" : {
+		  "version" : "3.1.0"
+		}
 
     }]
 
