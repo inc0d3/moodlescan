@@ -6,15 +6,22 @@ import json
 import optparse
 import os
 import sys
-import urllib.request
+import urllib
+import urllib2
 import zipfile
 
 
 print ("""
 
-      moodlescan v0.1
-............................
-auspiciado por www.incode.cl
+                     moodlescan v0.2
+.........................................................
+escrito por Victor Herrera - auspiciado por www.incode.cl
+
+Opciones
+
+-u [URL] 	: Inicia el scan en la URL indicada
+-a 		: Actualiza la base de datos de vulnerabilidades
+
 """)
 
 parser = optparse.OptionParser()
@@ -28,12 +35,12 @@ def update():
 	#TODO: catch HTTP errors (404, 503, timeout, etc)
 	print ("Nueva version de la base de datos encontrada, actualizando...")
 	urlup = "https://raw.githubusercontent.com/inc0d3/moodlescan/master/update/data.zip"
-	urllib.request.urlretrieve (urlup, "data.zip")
+	urllib.urlretrieve (urlup, "data.zip")
 	zip_ref = zipfile.ZipFile('data.zip', 'r')
 	zip_ref.extractall('data')
 	zip_ref.close()
 	os.remove('data.zip')
-	print ("\nLa base de datos ha sido actualizada correctamente.")
+	print ("\nLa base de datos ha sido actualizada correctamente.\n")
 
 
 def checkupdate():
@@ -48,7 +55,7 @@ def checkupdate():
 		actual = datetime.datetime.strptime(li,"%Y%m%d%H%M%S")
 		fo.close()
 		
-		urllib.request.urlretrieve (urlup, "update.dat")
+		urllib.urlretrieve (urlup, "update.dat")
 		fo = open("update.dat", "r+")
 		li = fo.readline()
 		ultima = datetime.datetime.strptime(li,"%Y%m%d%H%M%S")
@@ -57,11 +64,11 @@ def checkupdate():
 		if ultima > actual:
 			update()
 		else:
-			print("La base de datos de moodlescan ya esta actualizada.")
+			print("La base de datos de moodlescan ya esta actualizada (version: " + actual.strftime("%d-%m-%Y %H:%M") + ").\n")
 		
 	except IOError as e:
 		if e.errno == 2:
-			urllib.request.urlretrieve (urlup, "update.dat")
+			urllib.urlretrieve (urlup, "update.dat")
 			fo = open("update.dat", "r+")
 			update()
 		else:
@@ -74,7 +81,7 @@ def getheader(url):
 	print ("Obteniendo datos del servidor " + url + " ...")
 	
 	try:
-		cnn = urllib.request.urlopen(url)
+		cnn = urllib2.urlopen(url)
 		
 		print ("")
 		print ("server		: " + cnn.info().get('server'))
@@ -85,7 +92,7 @@ def getheader(url):
 		print ("date		: " + cnn.info().get('date'))
 		print ("")
 	except Exception as e:
-		print ("\nHa ocurrido un error al intentar conectar con el objetivo. Verifique la URL.\nBusqueda finalizada.\n")
+		print ("\nHa ocurrido un error al intentar conectar con el objetivo. Verifique la URL.\n\nBusqueda finalizada.\n")
 		sys.exit()
 	
 
@@ -101,10 +108,12 @@ def getversion(url):
 			ar = k
 			
 			#TODO: no cache y catch HTTP errors (404, 503, timeout, etc)
-			cnn = urllib.request.urlopen(url + k)
+			cnn = urllib2.urlopen(url + k)
 			cnt = cnn.read()
 
 			hr = hashlib.md5(cnt).hexdigest()
+
+			#print (ar + " -- " + hr)
 
 			for c in b:
 				for k, x in c.items():
@@ -146,7 +155,7 @@ if options.url:
 	if v:
 		getcve(v)
 		
-	print ("\nBusqueda finalizada.")
+	print ("\nBusqueda finalizada.\n")
 
 
 

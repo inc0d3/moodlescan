@@ -15,7 +15,9 @@
 
     }],
     "admin/environment.xml" : [{
-
+		"2ad69d4d61c902c78693f51e1f326115" : {
+		  "version" : "2.3"
+		},
 		"e05f0126ed075eaf8dda7e1346e439ff" : {
 		  "version" : "2.4.2"
 		},
