@@ -114,7 +114,7 @@ def getversion(url):
 				s[i].append(0)
 		i = i + 1
 
-	with open('version.txt', 'r') as fve:
+	with open('data/version.txt', 'r') as fve:
     		data = fve.read()
 		
 	f = 100
