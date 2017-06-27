@@ -9,11 +9,12 @@ import sys
 import urllib
 import urllib2
 import zipfile
+import re
 
 
 print ("""
 
-                     moodlescan v0.2
+                     moodlescan v0.3
 .........................................................
 escrito por Victor Herrera - auspiciado por www.incode.cl
 
@@ -51,23 +52,22 @@ def checkupdate():
 	try:
 
 		fo = open("update.dat", "r+")
-		li = fo.readline()
-		actual = datetime.datetime.strptime(li,"%Y%m%d%H%M%S")
+		actual = int(fo.readline())
 		fo.close()
 		
 		urllib.urlretrieve (urlup, "update.dat")
 		fo = open("update.dat", "r+")
-		li = fo.readline()
-		ultima = datetime.datetime.strptime(li,"%Y%m%d%H%M%S")
+		ultima = int(fo.readline())
 		fo.close()
 		
 		if ultima > actual:
 			update()
 		else:
-			print("La base de datos de moodlescan ya esta actualizada (version: " + actual.strftime("%d-%m-%Y %H:%M") + ").\n")
+			print("La base de datos de moodlescan ya se encuentra actualizada (version: " + str(actual) + ").\n")
 		
 	except IOError as e:
 		if e.errno == 2:
+			print(e)
 			urllib.urlretrieve (urlup, "update.dat")
 			fo = open("update.dat", "r+")
 			update()
@@ -98,29 +98,38 @@ def getheader(url):
 
 def getversion(url):
 	print ("Obteniendo version de moodle...")
-	f = open('data/version.txt','r')
-	jsond = json.load(f)
-	f.close()
 
-	for a in jsond['archivos']:
-		for k , b in a.items():
-			
-			ar = k
-			
-			#TODO: no cache y catch HTTP errors (404, 503, timeout, etc)
-			cnn = urllib2.urlopen(url + k)
+	s = [['/admin/environment.xml'], ['/admin/upgrade.txt'], ['/lib/upgrade.txt'], ['/tags.txt'], ['/README.txt']]
+	
+	i = 0
+	for a in s:		
+		#TODO: no cache y catch HTTP errors (404, 503, timeout, etc)
+		try:
+			cnn = urllib2.urlopen(url + a[0])
 			cnt = cnn.read()
+			s[i].append(hashlib.md5(cnt).hexdigest())
+			
+		except urllib2.URLError as e:
+			if e.code == 404:
+				s[i].append(0)
+		i = i + 1
 
-			hr = hashlib.md5(cnt).hexdigest()
+	with open('version.txt', 'r') as fve:
+    		data = fve.read()
+		
+	f = 100
+	version = 0
+	for m in s:
+		if m[1] != 0:
+			l = re.findall(".*" + m[1] + ".*", data)
+			if (len(l) < f) and (len(l) > 0) :
+				f = len(l)
+				version = l[0]
 
-			#print (ar + " -- " + hr)
-
-			for c in b:
-				for k, x in c.items():
-					if hr == k:
-						print ("\nVersion encontrada via " + ar + " : Moodle v" +  x['version'])
-						return x['version']
-				
+	if version != 0:
+		print ("\nVersion encontrada via " + version.split(';')[2] + " : Moodle " +  version.split(';')[0])
+		return version.split(';')[0].replace("v","")
+		
 	print ("\nVersion de moodle no encontrada")
 	return False
 
