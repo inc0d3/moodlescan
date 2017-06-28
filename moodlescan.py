@@ -78,26 +78,21 @@ def checkupdate():
 
 
 def getheader(url):
-	print ("Obteniendo datos del servidor " + url + " ...")
+	print ("Obteniendo datos del servidor " + url + " ...\n")
 	
 	try:
 		cnn = urllib2.urlopen(url)
-		
-		print ("")
-		print ("server		: " + cnn.info().get('server'))
-		if cnn.info().get('x-powered-by'):
-			print ("x-powered-by	: " + cnn.info().get('x-powered-by'))	
-		if cnn.info().get('x-frame-options'):
-			print ("x-frame-options	: " + cnn.info().get('x-frame-options'))
-		print ("date		: " + cnn.info().get('date'))
-		print ("")
+		headers = ['server', 'x-powered-by', 'x-frame-options', 'date', 'last-modified']		
+		for el in headers:
+			if cnn.info().get(el):
+				print (el.ljust(15) + "	: " + cnn.info().get(el))
 	except Exception as e:
 		print ("\nHa ocurrido un error al intentar conectar con el objetivo. Verifique la URL.\n\nBusqueda finalizada.\n")
 		sys.exit()
 	
 
 def getversion(url):
-	print ("Obteniendo version de moodle...")
+	print ("\nObteniendo version de moodle...")
 
 	s = [['/admin/environment.xml'], ['/admin/upgrade.txt'], ['/lib/upgrade.txt'], ['/tags.txt'], ['/README.txt']]
 	
@@ -148,11 +143,11 @@ def getcve(version):
 		for k , b in a.items():
 			if version  in b['afectadas']:
 				nvuln +=1
-				print ("\nCVE		: " + k)
+				print ("\nCVE		: " + k + " ### Tipo : " + b['tipo'] + " ### Autenticacion? : " + b['auth'] + " ### Exploit? : " + b['exploit'])
 				print ("Descripcion	: " + b['descripcion'])
-				print ("Tipo		: " + b['tipo'])
-				print ("Autenticacion?	: " + b['auth'])
-				print ("Exploit?	: " + b['exploit'])
+				
+
+	print("\nVulnerabilidades encontradas: " + str(nvuln))			
 				
 				
 if options.act:
