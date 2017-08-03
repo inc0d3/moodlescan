@@ -6,10 +6,12 @@ import json
 import optparse
 import os
 import sys
-import urllib
 import urllib2
 import zipfile
 import re
+
+from incode.httputils import *
+
 
 
 print ("""
@@ -36,7 +38,11 @@ def update():
 	#TODO: catch HTTP errors (404, 503, timeout, etc)
 	print ("Nueva version de la base de datos encontrada, actualizando...")
 	urlup = "https://raw.githubusercontent.com/inc0d3/moodlescan/master/update/data.zip"
-	urllib.urlretrieve (urlup, "data.zip")
+	fileDownload(urlup, "data.zip")
+	if (r):
+			print("Ha ocurrido un error al conectarse con el servidor de actualizacion : " + str(r.reason) )
+			sys.exit()
+			
 	zip_ref = zipfile.ZipFile('data.zip', 'r')
 	zip_ref.extractall('data')
 	zip_ref.close()
@@ -55,7 +61,11 @@ def checkupdate():
 		actual = int(fo.readline())
 		fo.close()
 		
-		urllib.urlretrieve (urlup, "update.dat")
+		r = fileDownload(urlup, "update.dat")
+		if (r):
+			print("Ha ocurrido un error al conectarse con el servidor de actualizacion : " + str(r.reason) )
+			sys.exit()
+		
 		fo = open("update.dat", "r+")
 		ultima = int(fo.readline())
 		fo.close()
