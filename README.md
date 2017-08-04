@@ -16,3 +16,21 @@ Configuracion de Proxy
 -d [protocolo]  : Protocolo de autenticacion en proxy: basic o ntlm
 
 ```
+## Lista de cambios
+
+0.4
+
+- Opciones para utilizar proxy
+- Nuevas vulnerabilidades en base de datos
+
+0.3
+
+- Version inicial
+
+## Autor
+
+* **Víctor Herrera** - ** 
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
