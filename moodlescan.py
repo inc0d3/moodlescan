@@ -16,7 +16,7 @@ from incode.httputils import *
 
 print ("""
 
-                     moodlescan v0.3
+                     moodlescan v0.4
 .........................................................
 escrito por Victor Herrera - auspiciado por www.incode.cl
 
@@ -25,11 +25,22 @@ Opciones
 -u [URL] 	: Inicia el scan en la URL indicada
 -a 		: Actualiza la base de datos de vulnerabilidades
 
+Configuracion de Proxy
+
+-p [URL]	: Url del proxy (http)
+-b [usuario]	: Usuario para autenticar en proxy
+-c [clave]	: Password para autenticar en proxy
+-d [protocolo]  : Protocolo de autenticacion en proxy: basic o ntlm
+
 """)
 
 parser = optparse.OptionParser()
 
 parser.add_option('-u', '--url', dest="url", help="Direccion del sitio web a escanear")
+parser.add_option('-p', '--proxy', dest="prox", help="Direccion http del proxy")
+parser.add_option('-b', '--proxy-user', dest="proxu", help="Usuario para autenticar en proxy")
+parser.add_option('-c', '--proxy-pass', dest="proxp", help="Password para autenticar en proxy")
+parser.add_option('-d', '--proxy-auth', dest="proxa", help="Protocolo de autenticacion en proxy: basic o ntlm")
 parser.add_option('-a', action="store_true",dest="act", help="Actualizar base de datos")
 
 options, remainder = parser.parse_args()
@@ -87,15 +98,18 @@ def checkupdate():
 
 
 
-def getheader(url):
+def getheader(url, proxy):
 	print ("Obteniendo datos del servidor " + url + " ...\n")
 	
 	try:
-		cnn = urllib2.urlopen(url)
+		cnn = httpConnection(url, proxy)
 		headers = ['server', 'x-powered-by', 'x-frame-options', 'date', 'last-modified']		
 		for el in headers:
 			if cnn.info().get(el):
 				print (el.ljust(15) + "	: " + cnn.info().get(el))
+	except urllib2.URLError as e:
+		print("Ha ocurrido un error al conectarse con el objetivo : " + str(e.reason) )
+		sys.exit()
 	except Exception as e:
 		print ("\nHa ocurrido un error al intentar conectar con el objetivo. Verifique la URL.\n\nBusqueda finalizada.\n")
 		sys.exit()
@@ -164,7 +178,23 @@ if options.act:
 	checkupdate()
 
 if options.url:
-	getheader(options.url)
+	proxy = httpProxy()
+
+	#se revisa si es necesario crear instancia de proxy
+	if (options.prox):	
+
+		proxy.url = options.prox
+
+		if (options.proxu):
+			proxy.user = options.proxu
+
+		if (options.proxp):
+			proxy.password = options.proxp
+		
+		if (options.proxa):
+			proxy.auth = options.proxa
+
+	getheader(options.url, proxy)
 	v = getversion(options.url)
 	if v:
 		getcve(v)

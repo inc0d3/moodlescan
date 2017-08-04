@@ -52,6 +52,45 @@
 				}
 			}]	
 		},
+		"CVE-2015-2269" : {
+			"tipo" : "XSS",
+			"auth" : "yes",
+			"exploit" : "no",
+			"afectadas" : "2.5.1,2.5.2,2.5.3,2.5.4,2.5.5,2.5.6,2.5.7,2.5.8,2.5.9,2.6,2.6.1,2.6.2,2.6.3,2.6.4,2.6.5,2.6.6,2.6.7,2.6.8,2.7,2.7.1,2.7.2,2.7.3,2.7.4,2.7.5,2.8,2.8.1,2.8.2,2.8.3,",
+			"descripcion" : "Multiple cross-site scripting (XSS) vulnerabilities in lib/javascript-static.js in Moodle through 2.5.9, 2.6.x before 2.6.9, 2.7.x before 2.7.6, and 2.8.x before 2.8.4 allow remote authenticated users to inject arbitrary web script or HTML via a (1) alt or (2) title attribute in an IMG element.",
+			"referencia": [{
+				"00": {
+					"desc" : "",
+					"url" : ""
+				}
+			}]	
+		},
+		"CVE-2015-2273" : {
+			"tipo" : "XSS",
+			"auth" : "yes",
+			"exploit" : "no",
+			"afectadas" : "2.5.1,2.5.2,2.5.3,2.5.4,2.5.5,2.5.6,2.5.7,2.5.8,2.5.9,2.6,2.6.1,2.6.2,2.6.3,2.6.4,2.6.5,2.6.6,2.6.7,2.6.8,2.7,2.7.1,2.7.2,2.7.3,2.7.4,2.7.5,2.8,2.8.1,2.8.2,2.8.3,",
+			"descripcion" : "Cross-site scripting (XSS) vulnerability in mod/quiz/report/statistics/statistics_question_table.php in Moodle through 2.5.9, 2.6.x before 2.6.9, 2.7.x before 2.7.6, and 2.8.x before 2.8.4 allows remote authenticated users to inject arbitrary web script or HTML by leveraging the student role for a crafted quiz response.",
+			"referencia": [{
+				"00": {
+					"desc" : "",
+					"url" : ""
+				}
+			}]	
+		},
+		"CVE-2015-3174" : {
+			"tipo" : "XSS",
+			"auth" : "yes",
+			"exploit" : "no",
+			"afectadas" : "2.5.1,2.5.2,2.5.3,2.5.4,2.5.5,2.5.6,2.5.7,2.5.8,2.5.9,2.6,2.6.1,2.6.2,2.6.3,2.6.4,2.6.5,2.6.6,2.6.7,2.6.8,2.6.9,2.6.10,2.7,2.7.1,2.7.2,2.7.3,2.7.4,2.7.5,2.7.6,2.7.7,2.8,2.8.1,2.8.2,2.8.3,2.8.4,2.8.5,",
+			"descripcion" : "mod/quiz/db/access.php in Moodle through 2.5.9, 2.6.x before 2.6.11, 2.7.x before 2.7.8, and 2.8.x before 2.8.6 does not set the RISK_XSS bit for graders, which allows remote authenticated users to conduct cross-site scripting (XSS) attacks via crafted gradebook feedback during manual quiz grading.",
+			"referencia": [{
+				"00": {
+					"desc" : "",
+					"url" : ""
+				}
+			}]	
+		},
 		"CVE-2016-2153" : {
 			"tipo" : "XSS",
 			"auth" : "no",
