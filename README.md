@@ -1,4 +1,4 @@
-# moodlescan v0.4
+# moodlescan v0.5
 Tool for scan vulnerabilities in Moodle platforms
 
 ## Modo de uso
@@ -17,6 +17,11 @@ Configuracion de Proxy
 
 ```
 ## Lista de cambios
+
+0.5
+
+- Cambios para operar con Python 3.7+
+- Se corrije algoritmo para determinar la versión
 
 0.4
 

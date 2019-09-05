@@ -1,5 +1,6 @@
 
-import urllib2
+import urllib
+import urllib.request
 
 
 class httpProxy():
@@ -11,35 +12,30 @@ class httpProxy():
 #descarga un archivo al directorio y nombre indicado en dest
 def fileDownload(url, dest):
 	try:
-
-		resp = urllib2.urlopen(url)
-		with open(dest, 'wb') as f:
-  			f.write(resp.read())
-
-  		return None	
+		with urllib.request.urlopen(url) as response, open(dest, 'wb') as out_file:
+			data = response.read()
+			out_file.write(data)
+			return None	
 	except urllib2.URLError as e:
 		return e
 
 
 #genera una conecion HTTP con o sin proxy, dependiendo de los parametros, adicionalmente, el proxy lo puede autenticar con NTLM o Basic
 def httpConnection(url,  proxy):
-	
-	
-
 	#TODO: habilitar autenticacion ntlm
 	if (proxy.auth == "ntlm"):
-		passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+		passman = urllib.HTTPPasswordMgrWithDefaultRealm()
 		passman.add_password(None, proxy.url, proxy.user, proxy.password)
 		auth = HTTPNtlmAuthHandler.HTTPNtlmAuthHandler(passman)
 	else:
-		passman = urllib2.HTTPPasswordMgr()
+		passman = urllib.request.HTTPPasswordMgr()
 		passman.add_password(None, proxy.url, proxy.user, proxy.password)
-		auth = urllib2.HTTPBasicAuthHandler(passman)
+		auth = urllib.request.HTTPBasicAuthHandler(passman)
 
 
-	if (proxy.url):
-		proxy = urllib2.ProxyHandler({'http': proxy.url})
-		opener = urllib2.build_opener(proxy.url, auth, urllib2.HTTPHandler)
-		urllib2.install_opener(opener)
+	if (proxy.url):		
+		proxy = urllib.ProxyHandler({'http': proxy.url})
+		opener = urllib.build_opener(proxy.url, auth, urllib2.HTTPHandler)
+		urllib.install_opener(opener)
 
-	return urllib2.urlopen(url)
+	return urllib.request.urlopen(url)
