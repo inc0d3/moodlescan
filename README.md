@@ -21,7 +21,8 @@ Configuracion de Proxy
 0.5
 
 - Cambios para operar con Python 3.7+
-- Se corrije algoritmo para determinar la versión
+- Se corrige algoritmo para determinar la versión
+- Se corrigen errores reportados
 
 0.4
 
