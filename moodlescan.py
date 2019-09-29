@@ -157,7 +157,8 @@ def getversion(url):
 	f = 100
 	version = 0
 	occ = 100
-	
+	nada = 1
+
 	for m in s:
 		if m[1] != 0:
 			l = re.findall(".*" + m[1] + ".*", data)
@@ -166,25 +167,31 @@ def getversion(url):
 				if len(l) < occ:
 					occ = len(l)
 					archivo = m
+					nada = 0
+
+	
 	#se crea una lista con todas las versiones que tienen el hash encontrado con menor frecuencia en el paso anterior
 	#luego se comienza a revisar cuál de esas versiones tiene la mayor cantidad de similitud con la lista inicial "s" (hashes del objetivo)
-	candidatos = re.findall(".*" + archivo[1] + ".*", data)
+	if nada == 0:
+		candidatos = re.findall(".*" + archivo[1] + ".*", data)
 
-	for z in s:
-		occ = 0
-		for x in candidatos:		
-			tmp = x.split(";")		
-			if tmp[2] != z[0]:
-				
-					c = re.findall(tmp[0] + ";" +  str(z[1]) + ".*", data)
-					if len(c) > 0:						
-						version = c[0]
-						occ = occ + 1
-		
-		if occ == 1:
-			break
-		else:
-			version = 0
+		for z in s:
+			occ = 0
+			for x in candidatos:		
+				tmp = x.split(";")		
+				if tmp[2] != z[0]:
+					
+						c = re.findall(tmp[0] + ";" +  str(z[1]) + ".*", data)
+						if len(c) > 0:						
+							version = c[0]
+							occ = occ + 1
+			
+			if occ == 1:
+				break
+			else:
+				version = 0
+	else:
+		version = 0
 
 	
 
