@@ -1,22 +1,30 @@
-# moodlescan v0.5
+# moodlescan v0.6
 Tool for scan vulnerabilities in Moodle platforms
 
-## Modo de uso
+## Usage
 ```
-Opciones
+Options
 
--u [URL] 	: Inicia el scan en la URL indicada
--a 		: Actualiza la base de datos de vulnerabilidades
+		-u [URL] 	: URL with the target, the moodle to scan
+		-a 		: Update the database of vulnerabilities to latest version
+		-r 		: Enable HTTP requests with random user-agent
 
-Configuracion de Proxy
+		Proxy configuration
 
--p [URL]	: Url del proxy (http)
--b [usuario]	: Usuario para autenticar en proxy
--c [clave]	: Password para autenticar en proxy
--d [protocolo]  : Protocolo de autenticacion en proxy: basic o ntlm
+		-p [URL]	: URL of proxy server (http)
+		-b [user]	: User for authenticate to proxy server
+		-c [password]	: Password for authenticate to proxt server
+		-d [protocol]  : Protocol of authentication: basic or ntlm
+
 
 ```
-## Lista de cambios
+## Changes
+
+0.6
+
+- Update database of vulnerabilities and versions
+- Update version scan algorithm
+- Update vulnerability report
 
 0.5
 
@@ -35,7 +43,7 @@ Configuracion de Proxy
 
 ## Autor
 
-* **Víctor Herrera** - ** 
+* **Víctor Herrera** 
 
 ## License
 
