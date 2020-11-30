@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 
 import datetime
 import hashlib
@@ -289,9 +291,7 @@ def getversion(url, proxy, agent):
 			for x in candidatos:		
 				tmp = x.split(";")		
 				if tmp[2] != z[0]:
-					
 						c = re.findall(tmp[0] + ";" +  str(z[1]) + ".*", data)
-						
 						if len(c) > 0:						
 							version = c[0]
 							occ = occ + 1

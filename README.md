@@ -25,6 +25,8 @@ Options
 - Update database of vulnerabilities and versions
 - Update version scan algorithm
 - Update vulnerability report
+- Add Random user-agent support
+- Fix encoding errors
 
 0.5
 
