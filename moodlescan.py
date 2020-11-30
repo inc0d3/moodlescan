@@ -163,7 +163,7 @@ def update():
 	#TODO: catch HTTP errors (404, 503, timeout, etc)
 	print ("A new version of database was found, updating...")
 	urlup = "https://raw.githubusercontent.com/inc0d3/moodlescan/master/update/update.zip"
-	r = fileDownload(urlup, "data.zip")
+	r = fileDownload(urlup, "data.zip", "")
 	if (r):
 			print("Error to connect with database service : " + str(r.reason) )
 			sys.exit()
@@ -186,7 +186,7 @@ def checkupdate():
 		actual = int(fo.readline())
 		fo.close()
 		
-		r = fileDownload(urlup, "update.dat")
+		r = fileDownload(urlup, "update.dat", "")
 		if (r):
 			print("Error to connect with database service : " + str(r.reason) )
 			sys.exit()
