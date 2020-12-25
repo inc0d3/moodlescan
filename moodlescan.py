@@ -60,8 +60,8 @@ def httpConnection(url,  proxy, agent, ignore):
 		#todo
 		print("")
 	else:
-		authinfo = urllib.request.HTTPBasicAuthHandler()
-		authinfo.add_password(realm='Proxy', uri=proxy.url, user=proxy.user, passwd=proxy.password)
+		auth_handler = urllib.request.HTTPBasicAuthHandler()
+		auth_handler.add_password(realm='Proxy', uri=proxy.url, user=proxy.user, passwd=proxy.password)
 
 	if (proxy.url):		
 		opener = urllib.request.build_opener(auth_handler)
