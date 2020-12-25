@@ -34,7 +34,7 @@ def fileDownload(url, dest, agent):
 			data = response.read()
 			out_file.write(data)
 			return None	
-	except urllib2.URLError as e:
+	except URLError as e:
 		return e
 
 def getuseragent():
@@ -57,18 +57,14 @@ def getignoressl():
 def httpConnection(url,  proxy, agent, ignore):
 	
 	if (proxy.auth == "ntlm"):
-		passman = urllib.HTTPPasswordMgrWithDefaultRealm()
-		passman.add_password(None, proxy.url, proxy.user, proxy.password)
-		auth = HTTPNtlmAuthHandler.HTTPNtlmAuthHandler(passman)
+		#todo
+		print("")
 	else:
-		passman = urllib.request.HTTPPasswordMgr()
-		passman.add_password(None, proxy.url, proxy.user, proxy.password)
-		auth = urllib.request.HTTPBasicAuthHandler(passman)
-
+		authinfo = urllib.request.HTTPBasicAuthHandler()
+		authinfo.add_password(realm='Proxy', uri=proxy.url, user=proxy.user, passwd=proxy.password)
 
 	if (proxy.url):		
-		proxy = urllib.ProxyHandler({'http': proxy.url})
-		opener = urllib.build_opener(proxy.url, auth, urllib2.HTTPHandler)
+		opener = urllib.request.build_opener(auth_handler)
 		urllib.install_opener(opener)
 
 	req = Request(url)
