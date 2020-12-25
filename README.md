@@ -1,16 +1,16 @@
-# moodlescan v0.6
+# moodlescan v0.7
 Tool for scan vulnerabilities in Moodle platforms
 
 ![Captura](https://user-images.githubusercontent.com/24817405/100559004-95cec400-328f-11eb-9f4a-4fe36a526c21.JPG)
 
-## Installation and requeriments
+## Installation and requirements
 
 - Install Python 3
 - Install the package python3-pip
-- Using pip, install request library for Python
 - Clone this repository: git clone https://github.com/inc0d3/moodlescan.git
 - cd moodlescan/
-- ./moodlescan
+- run: pip install -r requeriments.txt
+- python moodlescan.py -u [URL]
 
 ## Usage
 ```
@@ -19,6 +19,7 @@ Options
 		-u [URL] 	: URL with the target, the moodle to scan
 		-a 		: Update the database of vulnerabilities to latest version
 		-r 		: Enable HTTP requests with random user-agent
+		-k 		: Ignore SSL Certificate
 
 		Proxy configuration
 
@@ -31,12 +32,17 @@ Options
 ```
 ## Changes
 
+0.7
+
+- Added -k option for Ignore SSL Certificate
+- Added a file for error logs
+
 0.6
 
 - Update database of vulnerabilities and versions
 - Update version scan algorithm
 - Update vulnerability report
-- Add Random user-agent support
+- Added Random user-agent support
 - Fix encoding errors
 
 0.5

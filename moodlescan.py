@@ -14,6 +14,7 @@ from urllib.error import URLError
 import zipfile
 import re
 import random
+import ssl
 
 
 class httpProxy():
@@ -40,8 +41,20 @@ def getuseragent():
     lines = open('data/agents.txt').read().splitlines()
     return random.choice(lines)
 
+def savelog(e, url):
+	logfile = open("errors.moodlescan.log", "a")
+	logfile.write(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " - " + url + " - " + str(e.reason))
+	logfile.close()
+
+def getignoressl():
+	ctx = ssl.create_default_context()
+	ctx.check_hostname = False
+	ctx.verify_mode = ssl.CERT_NONE
+	return ctx
+
+
 #genera una conecion HTTP con o sin proxy, dependiendo de los parametros, adicionalmente, el proxy lo puede autenticar con NTLM o Basic
-def httpConnection(url,  proxy, agent):
+def httpConnection(url,  proxy, agent, ignore):
 	
 	if (proxy.auth == "ntlm"):
 		passman = urllib.HTTPPasswordMgrWithDefaultRealm()
@@ -62,8 +75,10 @@ def httpConnection(url,  proxy, agent):
 	if len(agent) > 2:
 		req.add_header('user-agent', agent)
 
-
-	return urlopen(req)
+	if (ignore):
+		return urlopen(req,  context=ignore)
+	else:
+		return urlopen(req)
 
 def banner():
 	print ("""
@@ -83,7 +98,7 @@ SSS     S*S    YSSP~YSSY      YSSP~YSSY    SSS~YSSY      YSSP    YSSP  YSS'     
         SP                                                                                    SP   SP          
         Y                                                                                     Y    Y           
                                                                                                                
-Version 0.6 - Nov/2020""")
+Version 0.7 - Dic/2020""")
 
 	print ("." * 109)
 	print ("""
@@ -119,6 +134,7 @@ def main():
 	parser = argparse.ArgumentParser()
 
 	parser.add_argument('-u', '--url', dest="url", help="URL with the target, the moodle to scan")
+	parser.add_argument('-k', action="store_true", dest="ignore", help="Ignore SSL Certificate")
 	parser.add_argument('-r', action="store_true", dest="agent", help="Enable HTTP requests with random user-agent")
 	parser.add_argument('-a', action="store_true",dest="act", help="Update the database of vulnerabilities to latest version")
 	parser.add_argument('-p', '--proxy', dest="prox", help="URL of proxy server")
@@ -133,6 +149,9 @@ def main():
 
 	if options.agent:
 		agent = getuseragent()
+
+	if options.ignore:
+		ignore = getignoressl()
 
 	if options.url:
 		proxy = httpProxy()
@@ -151,8 +170,8 @@ def main():
 			if (options.proxa):
 				proxy.auth = options.proxa
 
-		getheader(options.url, proxy, agent)
-		v = getversion(options.url, proxy, agent)
+		getheader(options.url, proxy, agent, ignore)
+		v = getversion(options.url, proxy, agent, ignore)
 		if v:
 			getcve(v)
 			
@@ -212,24 +231,26 @@ def checkupdate():
 
 
 
-def getheader(url, proxy, agent):
+def getheader(url, proxy, agent, ignore):
 	print ("Getting server information " + url + " ...\n")
 	
 	try:
-		cnn = httpConnection(url, proxy, agent)
+		cnn = httpConnection(url, proxy, agent, ignore)
 		headers = ['server', 'x-powered-by', 'x-frame-options', 'x-xss-protection', 'last-modified']		
 		for el in headers:
 			if cnn.info().get(el):
 				print (el.ljust(15) + "	: " + cnn.info().get(el))
 	except URLError as e:
-		print("Error to connect with the target : " + str(e.reason) )
+		print("Error: Can't connect with the target : " + str(e.reason) )
+		savelog(e, url)
 		sys.exit()
 	except Exception as e:
-		print ("\nError to connect with the target. Check URL option.\n\nScan finished.\n")
+		print ("\nError: Can't connect with the target. Check URL option.\n\nScan finished.\n")
+		savelog(e, url)
 		sys.exit()
 	
 
-def getversion(url, proxy, agent):
+def getversion(url, proxy, agent, ignore):
 	print ("\nGetting moodle version...")
 
 	s = [['/admin/environment.xml'], ['/composer.lock'], ['/lib/upgrade.txt'], ['/privacy/export_files/general.js'], ['/composer.json'], ['/question/upgrade.txt'], ['/admin/tool/lp/tests/behat/course_competencies.feature']]
@@ -243,7 +264,7 @@ def getversion(url, proxy, agent):
 	for a in s:		
 		#TODO: catch HTTP errors (404, 503, timeout, etc)
 		try:
-			cnn = httpConnection(url + a[0], proxy, agent)
+			cnn = httpConnection(url + a[0], proxy, agent, ignore)
 			#cnn = urllib.request.urlopen()
 			cnt = cnn.read()
 			s[i].append(hashlib.md5(cnt).hexdigest())
