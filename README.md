@@ -11,7 +11,7 @@ Tool for scan vulnerabilities in Moodle platforms
 - Install the package python3-pip
 - Clone this repository: git clone https://github.com/inc0d3/moodlescan.git
 - cd moodlescan/
-- run: pip install -r requeriments.txt
+- run: pip install -r requirements.txt
 - python moodlescan.py -u [URL]
 
 ## Usage
