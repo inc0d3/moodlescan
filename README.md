@@ -1,4 +1,4 @@
-# moodlescan v0.7
+# moodlescan v0.8
 Tool for scan vulnerabilities in Moodle platforms
 
 [![moodlescan](https://github.com/inc0d3/moodlescan/workflows/moodlescan/badge.svg)](https://github.com/inc0d3/moodlescan/actions/runs/444166527)
