@@ -34,6 +34,12 @@ Options
 ```
 ## Changes
 
+0.8
+
+- Update database of vulnerabilities and versions
+- Fix error for bad URL format
+- Change URL in tests - one is offline and trigger an error
+
 0.7
 
 - Added -k option for Ignore SSL Certificate

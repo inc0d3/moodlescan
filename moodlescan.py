@@ -43,7 +43,10 @@ def getuseragent():
 
 def savelog(e, url):
 	logfile = open("errors.moodlescan.log", "a")
-	logfile.write(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " - " + url + " - " + str(e.reason))
+	if (hasattr(e, "reason")):
+		logfile.write(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " - " + url + " - " + str(e.reason) + "\n")
+	else:
+		logfile.write(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " - " + url + " - no reason\n" )
 	logfile.close()
 
 def getignoressl():
@@ -94,7 +97,7 @@ SSS     S*S    YSSP~YSSY      YSSP~YSSY    SSS~YSSY      YSSP    YSSP  YSS'     
         SP                                                                                    SP   SP          
         Y                                                                                     Y    Y           
                                                                                                                
-Version 0.7 - Dic/2020""")
+Version 0.8 - May/2021""")
 
 	print ("." * 109)
 	print ("""
@@ -128,6 +131,7 @@ def main():
 	banner()
 	agent = ""
 	parser = argparse.ArgumentParser()
+	ignore = False
 
 	parser.add_argument('-u', '--url', dest="url", help="URL with the target, the moodle to scan")
 	parser.add_argument('-k', action="store_true", dest="ignore", help="Ignore SSL Certificate")
