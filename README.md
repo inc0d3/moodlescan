@@ -9,12 +9,22 @@ Tool for scan vulnerabilities in Moodle platforms
 
 - Install Python 3
 - Install the package python3-pip
-- Clone this repository: git clone https://github.com/inc0d3/moodlescan.git
-- cd moodlescan/
-- run: pip install -r requirements.txt
-- python moodlescan.py -u [URL]
+- Clone this repository
+ 
+      git clone https://github.com/inc0d3/moodlescan.git
+    
+- Install dependencies
+ 
+      cd moodlescan/
+      pip install -r requirements.txt
+      
+     
+- Execute
+ 
+      python moodlescan.py -u [URL]
 
 ## Usage
+
 ```
 Options
 
@@ -27,7 +37,7 @@ Options
 
 		-p [URL]	: URL of proxy server (http)
 		-b [user]	: User for authenticate to proxy server
-		-c [password]	: Password for authenticate to proxt server
+		-c [password]	: Password for authenticate to proxy server
 		-d [protocol]  : Protocol of authentication: basic or ntlm
 
 
