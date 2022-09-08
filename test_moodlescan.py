@@ -26,14 +26,14 @@ def test_getheader_03_ssl():
 	proxy = moodlescan.httpProxy()
 	agent = moodlescan.getuseragent()
 	ignore = ""
-	url = "https://moodle.unizar.es/add/"
+	url = "http://moodle.sekchile.com/"
 	moodlescan.getheader(url, proxy, agent, ignore)
 
 def test_getheader_03_http():
 	proxy = moodlescan.httpProxy()
 	agent = moodlescan.getuseragent()
 	ignore = ""
-	url = "https://aulavirtual.cucs.udg.mx/"
+	url = "http://moodle.sekchile.com/"
 	moodlescan.getheader(url, proxy, agent, ignore)
 
 def test_getheader_01_nossl():
