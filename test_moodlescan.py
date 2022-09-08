@@ -33,7 +33,7 @@ def test_getheader_03_http():
 	proxy = moodlescan.httpProxy()
 	agent = moodlescan.getuseragent()
 	ignore = ""
-	url = "http://virtual.cucs.udg.mx/moodle/"
+	url = "https://aulavirtual.cucs.udg.mx/"
 	moodlescan.getheader(url, proxy, agent, ignore)
 
 def test_getheader_01_nossl():
