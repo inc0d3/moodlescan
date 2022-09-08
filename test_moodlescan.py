@@ -26,7 +26,7 @@ def test_getheader_03_ssl():
 	proxy = moodlescan.httpProxy()
 	agent = moodlescan.getuseragent()
 	ignore = ""
-	url = "https://moodle.uam.es/"
+	url = "https://moodle.unizar.es/add/"
 	moodlescan.getheader(url, proxy, agent, ignore)
 
 def test_getheader_03_http():
@@ -57,7 +57,7 @@ def test_getversion_02():
 	proxy = moodlescan.httpProxy()
 	agent = moodlescan.getuseragent()
 	ignore = ""
-	url = "https://ecampus.ugr.es/moodle/"
+	url = "https://moodle.unizar.es/add/"
 	moodlescan.getheader(url, proxy, agent, ignore)
 	v = moodlescan.getversion(url, proxy, agent, ignore)
 	if v:
