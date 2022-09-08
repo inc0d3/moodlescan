@@ -40,14 +40,14 @@ def test_getheader_01_nossl():
 	proxy = moodlescan.httpProxy()
 	agent = moodlescan.getuseragent()
 	ignore = moodlescan.getignoressl()
-	url = "http://moodlecolegiopatriciolynch.cl/"
+	url = "https://moodle.ucl.ac.uk/"
 	moodlescan.getheader(url, proxy, agent, ignore)
 
 def test_getversion_01():
 	proxy = moodlescan.httpProxy()
 	agent = moodlescan.getuseragent()
 	ignore = moodlescan.getignoressl()
-	url = "http://moodlecolegiopatriciolynch.cl/"
+	url = "https://moodle.ucl.ac.uk/"
 	moodlescan.getheader(url, proxy, agent, ignore)
 	v = moodlescan.getversion(url, proxy, agent, ignore)
 	if v:
